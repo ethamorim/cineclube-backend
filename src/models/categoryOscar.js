@@ -14,6 +14,9 @@ const CategoryOscar = db.define('CategoryOscar', {
     allowNull: false,
   },
 });
-CategoryOscar.hasMany(NomineeOscar);
+
+CategoryOscar.associate = (models) => {
+  CategoryOscar.hasMany(models.NomineeOscar);
+};
 
 module.exports = CategoryOscar;

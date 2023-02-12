@@ -1,9 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { db } = require('../database/connection');
 
-const CategoryOscar = require('./categoryOscar');
-const User = require('./user');
-
 const NomineeOscar = db.define('NomineeOscar', {
   id: {
     type: DataTypes.UUID,
@@ -19,7 +16,9 @@ const NomineeOscar = db.define('NomineeOscar', {
     allowNull: false,
   }
 });
-NomineeOscar.belongsTo(CategoryOscar);
-NomineeOscar.belongsToMany(User, { through: 'VotingOscar' });
+
+NomineeOscar.associate = (models) => {
+  NomineeOscar.belongsTo(models.CategoryOscar);
+};
 
 module.exports = NomineeOscar;

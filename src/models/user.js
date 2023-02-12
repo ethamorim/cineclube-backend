@@ -1,8 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { db } = require('../database/connection');
 
-const NomineeOscar = require('./nomineeOscar');
-
 const User = db.define('User', {
   user: {
     type: DataTypes.STRING,
@@ -21,6 +19,5 @@ const User = db.define('User', {
     allowNull: false,
   }
 });
-User.belongsToMany(NomineeOscar, { through: 'VotingOscar' });
 
 module.exports = User;
