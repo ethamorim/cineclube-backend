@@ -6,7 +6,7 @@ const logger = require('morgan');
 const dbConnect = require('./database/connection');
 dbConnect.connect();
 
-const rotas = require('./routes/index');
+const routes = require('./routes/index');
 
 const app = express();
 
@@ -16,6 +16,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-rotas(app);
+routes(app);
 
 module.exports = app;

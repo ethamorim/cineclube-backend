@@ -4,17 +4,41 @@ const { ValidationError } = require('sequelize');
 const CategoryOscar = require('../models/categoryOscar');
 const NomineeOscar = require('../models/nomineeOscar');
 
+const { isUUID } = require('../utils/easy');
+
+router.get('/categoriasOscar', async (req, res, next) => {
+  res.send(await CategoryOscar.findAll());
+});
+
+router.get('/indicadosOscar', async (req, res, next) => {
+  res.send(await NomineeOscar.findAll());
+})
+
 router.post('/adicionarCategoriaOscar', async (req, res, next) => {
-  const body = req.body;
+  try {
+    const body = req.body;
 
-  if (!body.category) {
+    if (!body.category) {
+      throw new Error("Falta parâmetro 'category'");
+    }
+    body.category = body.category.toLowerCase();
+
+    const categoryExists = await CategoryOscar.findAll({
+      where: {
+        category: body.category
+      }
+    });
+
+    if (categoryExists.length) {
+      throw new Error('Categoria já está inclusa!');
+    }
+    await CategoryOscar.create({ category: body.category });
+
+    res.json(await CategoryOscar.findAll());
+  } catch (error) {
     res.status(400);
-    next(new Error("Falta parâmetro 'category'"));
-    return;
+    next(error);
   }
-  await CategoryOscar.create({ category: body.category });
-
-  res.json(await CategoryOscar.findAll());
 });
 
 router.post('/adicionarIndicadoOscar', async (req, res, next) => {
@@ -26,24 +50,41 @@ router.post('/adicionarIndicadoOscar', async (req, res, next) => {
       'film',
       'category'
     ].forEach(el => {
-      if (!body[el]) {
+      const value = body[el];
+
+      if (!value) {
         res.status(400);
         throw new Error("Falta parâmetro " + el);
       }
+      if (isUUID(value)) return;
+      body[el] = value.toLowerCase();
     });
 
-    const categoryExists = await CategoryOscar.findAll({
-      where: {
+    let categoryExists;
+    if (isUUID(body.category)) {
+      categoryExists = await CategoryOscar.findByPk(body.category);
+    }
+    else {
+      categoryExists = await CategoryOscar.findAll({ where: {
         category: body.category
-      }
-    });
-    if (!categoryExists.length)
-      throw new Error(`Não existe categoria '${body.category}'`);
+      }});
+      categoryExists = categoryExists[0];
+    }
+
+    if (!categoryExists)
+      throw new Error(`Categoria inexistente!`);
+
+    const nomineeAlreadyRegistered = await NomineeOscar.findAll({ where: {
+      film: body.film,
+      CategoryOscarId: categoryExists.get('id')
+    }});
+    if (nomineeAlreadyRegistered.length)
+      throw new Error('Filme já cadastrado nessa categoria!');
 
     const newNominee = await NomineeOscar.create({
       'nominated': body.nominated,
       'film': body.film,
-      'CategoryOscarId': categoryExists[0].get('id')
+      'CategoryOscarId': categoryExists.get('id')
     });
     res.send(newNominee);
   } catch (error) {
