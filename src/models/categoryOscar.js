@@ -1,8 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { db } = require('../database/connection');
 
-const NomineeOscar = require('./nomineeOscar');
-
 const CategoryOscar = db.define('CategoryOscar', {
   id: {
     type: DataTypes.UUID,
@@ -13,6 +11,12 @@ const CategoryOscar = db.define('CategoryOscar', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  previousCategory: {
+    type: DataTypes.STRING
+  },
+  nextCategory: {
+    type: DataTypes.STRING
+  }
 });
 
 CategoryOscar.associate = (models) => {
