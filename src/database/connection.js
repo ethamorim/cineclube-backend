@@ -29,8 +29,8 @@ exports.connect = async () => {
     await sequelize.authenticate();
     console.log('Connection has been established successfully');
 
-    await sequelize.sync();
-    // await sequelize.sync({ force: true }); // to reset the database
+    // await sequelize.sync();
+    await sequelize.sync({ alter: true }); // to reset the database
   } catch (error) {
     console.log('Unable to connect to database:', error);
   }

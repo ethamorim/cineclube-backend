@@ -14,6 +14,9 @@ const NomineeOscar = db.define('NomineeOscar', {
   film: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  image: {
+    type: DataTypes.STRING
   }
 });
 

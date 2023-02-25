@@ -7,12 +7,31 @@ const NomineeOscar = require('../models/nomineeOscar');
 const { isUUID } = require('../utils/easy');
 
 router.get('/categoriasOscar', async (req, res, next) => {
-  res.send(await CategoryOscar.findAll());
+  const query = req.query;
+  if (query.category) {
+    res.send(await CategoryOscar.findAll({
+      where: {
+        category: query.category
+      }
+    }));
+  } else {
+    res.send(await CategoryOscar.findAll());
+  }
 });
 
 router.get('/indicadosOscar', async (req, res, next) => {
-  res.send(await NomineeOscar.findAll());
-})
+  const query = req.query;
+  if (query.category) {
+    res.send(await NomineeOscar.findAll({
+      where: {
+        CategoryOscarId: query.category
+      },
+      include: CategoryOscar
+    }));
+  } else {
+    res.send(await NomineeOscar.findAll());
+  }
+});
 
 router.post('/adicionarCategoriaOscar', async (req, res, next) => {
   try {
@@ -32,7 +51,11 @@ router.post('/adicionarCategoriaOscar', async (req, res, next) => {
     if (categoryExists.length) {
       throw new Error('Categoria já está inclusa!');
     }
-    await CategoryOscar.create({ category: body.category });
+    await CategoryOscar.create({
+      category: body.category ,
+      previousCategory: body.previousCategory || null,
+      nextCategory: body.nextCategory || null
+    });
 
     res.json(await CategoryOscar.findAll());
   } catch (error) {
