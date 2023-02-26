@@ -2,6 +2,49 @@ const router = require('express').Router();
 
 const User = require('../models/user');
 
+router.get('/sessaoAtiva', async (req, res, next) => {
+  const session = req.session;
+  console.log(req);
+  if (session.user) {
+    res.json(session.user);
+  } else {
+    res.json({});
+  }
+});
+
+router.post('/login', async (req, res, next) => {
+  console.log(req);
+  try {
+    const body = req.body;
+    if (!Object.keys(body).length) {
+      res.status(400);
+      throw new Error('Não foi possível realizar o login.');
+    }
+
+    [
+      'user',
+      'password'
+    ].forEach(el => {
+      if (!body[el]) {
+        res.status(400);
+        throw new Error('Não foi possível realizar o login.');
+      }
+    });
+    const login = await User.findByPk(body.user);
+    if (!login || login.password !== body.password)
+      throw new Error('Usuário ou senha inválidos');
+
+    req.session.user = {
+      user: login.user,
+      name: login.name,
+      email: login.email,
+    };
+    res.send();
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/cadastrar', async (req, res, next) => {
   try {
     const info = req.body;
