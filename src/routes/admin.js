@@ -117,4 +117,40 @@ router.post('/adicionarIndicadoOscar', async (req, res, next) => {
   }
 });
 
+router.put('/atualizarIndicadoOscar', async (req, res, next) => {
+  const body = req.body;
+  if (!body) res.json({ message: 'Nenhum dado atualizado' });
+
+  try {
+    [
+      'id',
+      'nominated',
+      'film',
+      'image',
+    ].forEach(el => {
+      if (!body[el]) {
+        res.status(400);
+        throw new Error(`Falta parâmetro '${el}'`);
+      }
+    });
+
+    await NomineeOscar.update(
+      {
+        nominated: body.nominated,
+        film: body.film,
+        image: body.image
+      },
+      {
+        where: {
+          id: body.id
+        }
+      }
+    );
+    res.json({ message: 'Indicado atualizado com sucesso!' });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
 module.exports = router;
