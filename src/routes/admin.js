@@ -1,39 +1,43 @@
-const router = require('express').Router();
-const { ValidationError } = require('sequelize');
+const router = require("express").Router();
+const { ValidationError } = require("sequelize");
 
-const CategoryOscar = require('../models/categoryOscar');
-const NomineeOscar = require('../models/nomineeOscar');
+const CategoryOscar = require("../models/categoryOscar");
+const NomineeOscar = require("../models/nomineeOscar");
 
-const { isUUID } = require('../utils/easy');
+const { isUUID } = require("../utils/easy");
 
-router.get('/categoriasOscar', async (req, res, next) => {
+router.get("/categoriasOscar", async (req, res, next) => {
   const query = req.query;
   if (query.category) {
-    res.send(await CategoryOscar.findAll({
-      where: {
-        category: query.category
-      }
-    }));
+    res.send(
+      await CategoryOscar.findAll({
+        where: {
+          category: query.category,
+        },
+      })
+    );
   } else {
     res.send(await CategoryOscar.findAll());
   }
 });
 
-router.get('/indicadosOscar', async (req, res, next) => {
+router.get("/indicadosOscar", async (req, res, next) => {
   const query = req.query;
   if (query.category) {
-    res.send(await NomineeOscar.findAll({
-      where: {
-        CategoryOscarId: query.category
-      },
-      include: CategoryOscar
-    }));
+    res.send(
+      await NomineeOscar.findAll({
+        where: {
+          CategoryOscarId: query.category,
+        },
+        include: CategoryOscar,
+      })
+    );
   } else {
     res.send(await NomineeOscar.findAll());
   }
 });
 
-router.post('/adicionarCategoriaOscar', async (req, res, next) => {
+router.post("/adicionarCategoriaOscar", async (req, res, next) => {
   try {
     const body = req.body;
 
@@ -44,17 +48,17 @@ router.post('/adicionarCategoriaOscar', async (req, res, next) => {
 
     const categoryExists = await CategoryOscar.findAll({
       where: {
-        category: body.category
-      }
+        category: body.category,
+      },
     });
 
     if (categoryExists.length) {
-      throw new Error('Categoria já está inclusa!');
+      throw new Error("Categoria já está inclusa!");
     }
     await CategoryOscar.create({
-      category: body.category ,
+      category: body.category,
       previousCategory: body.previousCategory || null,
-      nextCategory: body.nextCategory || null
+      nextCategory: body.nextCategory || null,
     });
 
     res.json(await CategoryOscar.findAll());
@@ -64,15 +68,11 @@ router.post('/adicionarCategoriaOscar', async (req, res, next) => {
   }
 });
 
-router.post('/adicionarIndicadoOscar', async (req, res, next) => {
+router.post("/adicionarIndicadoOscar", async (req, res, next) => {
   try {
     const body = req.body;
 
-    [
-      'nominated',
-      'film',
-      'category'
-    ].forEach(el => {
+    ["nominated", "film", "category"].forEach((el) => {
       const value = body[el];
 
       if (!value) {
@@ -86,48 +86,44 @@ router.post('/adicionarIndicadoOscar', async (req, res, next) => {
     let categoryExists;
     if (isUUID(body.category)) {
       categoryExists = await CategoryOscar.findByPk(body.category);
-    }
-    else {
-      categoryExists = await CategoryOscar.findAll({ where: {
-        category: body.category
-      }});
+    } else {
+      categoryExists = await CategoryOscar.findAll({
+        where: {
+          category: body.category,
+        },
+      });
       categoryExists = categoryExists[0];
     }
 
-    if (!categoryExists)
-      throw new Error(`Categoria inexistente!`);
+    if (!categoryExists) throw new Error(`Categoria inexistente!`);
 
-    const nomineeAlreadyRegistered = await NomineeOscar.findAll({ where: {
-      film: body.film,
-      CategoryOscarId: categoryExists.get('id')
-    }});
+    const nomineeAlreadyRegistered = await NomineeOscar.findAll({
+      where: {
+        film: body.film,
+        CategoryOscarId: categoryExists.get("id"),
+      },
+    });
     if (nomineeAlreadyRegistered.length)
-      throw new Error('Filme já cadastrado nessa categoria!');
+      throw new Error("Filme já cadastrado nessa categoria!");
 
     const newNominee = await NomineeOscar.create({
-      'nominated': body.nominated,
-      'film': body.film,
-      'CategoryOscarId': categoryExists.get('id')
+      nominated: body.nominated,
+      film: body.film,
+      CategoryOscarId: categoryExists.get("id"),
     });
     res.send(newNominee);
   } catch (error) {
-    if (error instanceof ValidationError)
-      res.status(400);
+    if (error instanceof ValidationError) res.status(400);
     next(error);
   }
 });
 
-router.put('/atualizarIndicadoOscar', async (req, res, next) => {
+router.put("/atualizarIndicadoOscar", async (req, res, next) => {
   const body = req.body;
-  if (!body) res.json({ message: 'Nenhum dado atualizado' });
+  if (!body) res.json({ message: "Nenhum dado atualizado" });
 
   try {
-    [
-      'id',
-      'nominated',
-      'film',
-      'image',
-    ].forEach(el => {
+    ["id", "nominated", "film", "image"].forEach((el) => {
       if (!body[el]) {
         res.status(400);
         throw new Error(`Falta parâmetro '${el}'`);
@@ -138,15 +134,15 @@ router.put('/atualizarIndicadoOscar', async (req, res, next) => {
       {
         nominated: body.nominated,
         film: body.film,
-        image: body.image
+        image: body.image,
       },
       {
         where: {
-          id: body.id
-        }
+          id: body.id,
+        },
       }
     );
-    res.json({ message: 'Indicado atualizado com sucesso!' });
+    res.json({ message: "Indicado atualizado com sucesso!" });
   } catch (error) {
     console.log(error);
     next(error);
