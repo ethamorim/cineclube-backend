@@ -4,16 +4,15 @@ const User = require('../models/user');
 
 router.get('/sessaoAtiva', async (req, res, next) => {
   const session = req.session;
-  console.log(req);
+
   if (session.user) {
-    res.json(session.user);
+    res.json(session.user.user);
   } else {
     res.json({});
   }
 });
 
 router.post('/login', async (req, res, next) => {
-  console.log(req);
   try {
     const body = req.body;
     if (!Object.keys(body).length) {
@@ -39,6 +38,7 @@ router.post('/login', async (req, res, next) => {
       name: login.name,
       email: login.email,
     };
+
     res.send();
   } catch (error) {
     next(error);
