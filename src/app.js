@@ -36,21 +36,15 @@ app.use(
   })
 );
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // update to match the domain you will make the request from
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
-
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: [
+      "https://cine-nandowastaken.vercel.app/",
+      "https://cineclube.onrender.com/",
+    ],
     methods: ["GET", "POST", "PUT", "PATCH", "HEAD", "OPTIONS"],
     allowedHeaders: ["X-Requested-With", "Content-Type"],
-    credentials: false,
+    credentials: true,
   })
 );
 app.use(logger("dev"));
