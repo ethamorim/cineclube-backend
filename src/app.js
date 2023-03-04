@@ -44,7 +44,7 @@ app.use(
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "HEAD", "OPTIONS"],
     allowedHeaders: ["X-Requested-With", "Content-Type"],
-    credentials: true,
+    credentials: false,
   })
 );
 app.use(logger("dev"));
