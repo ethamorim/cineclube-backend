@@ -5,6 +5,8 @@ const logger = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
 
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+
 const dbConnect = require('./database/connection');
 dbConnect.connect();
 
@@ -20,12 +22,16 @@ app.use(session({
   secret: 'secret',
   resave: false,
   saveUninitialized: false,
+  proxy: true,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24,
     sameSite: 'none',
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true
   },
+  store: new SequelizeStore({
+    db: dbConnect.db,
+  }),
 }));
 app.use(cors({
   origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
