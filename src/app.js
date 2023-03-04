@@ -38,13 +38,10 @@ app.use(
 
 app.use(
   cors({
-    origin: [
-      "https://cineclube.onrender.com/",
-      "https://cine-nandowastaken.vercel.app/",
-    ],
+    origin: ["https://cine-nandowastaken.vercel.app/"],
     methods: ["GET", "POST", "PUT", "PATCH", "HEAD", "OPTIONS"],
     allowedHeaders: ["X-Requested-With", "Content-Type"],
-    credentials: false,
+    credentials: true,
   })
 );
 app.use(logger("dev"));
