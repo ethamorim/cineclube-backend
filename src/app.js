@@ -38,7 +38,7 @@ app.use(
 
 app.use(
   cors({
-    origin: ["https://cine-nandowastaken.vercel.app/"],
+    origin: ["https://cine-nandowastaken.vercel.app/", "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "PATCH", "HEAD", "OPTIONS"],
     allowedHeaders: ["X-Requested-With", "Content-Type"],
     credentials: true,
