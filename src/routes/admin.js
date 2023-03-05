@@ -98,11 +98,12 @@ router.post('/adicionarIndicadoOscar', async (req, res, next) => {
       throw new Error(`Categoria inexistente!`);
 
     const nomineeAlreadyRegistered = await NomineeOscar.findAll({ where: {
+      nominated: body.nominated,
       film: body.film,
       CategoryOscarId: categoryExists.get('id')
     }});
     if (nomineeAlreadyRegistered.length)
-      throw new Error('Filme já cadastrado nessa categoria!');
+      throw new Error('Indicado já cadastrado nessa categoria!');
 
     const newNominee = await NomineeOscar.create({
       'nominated': body.nominated,
