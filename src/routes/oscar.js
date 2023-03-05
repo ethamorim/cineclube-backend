@@ -64,9 +64,7 @@ router.get('/votosOscar', async (req, res, next) => {
 });
 
 router.post('/apostarOscar', async (req, res, next) => {
-  try {
-    const vote = req.body;
-
+  const bet = async (vote) => {
     [
       'user',
       'nominee',
@@ -110,13 +108,25 @@ router.post('/apostarOscar', async (req, res, next) => {
     if (alreadyVoted[0])
       throw new Error('Usuário já votou nessa categoria!');
 
-    const voting = await VotingOscar.create({
+    await VotingOscar.create({
       user: userExists.get('user'),
       nomineeId: nominee.get('id'),
       categoryId: category.get('id'),
     });
+  }
 
-    res.send(voting);
+  try {
+    const body = req.body;
+
+    if (body.votes) {
+      for (let vote of body.votes) {
+        await bet(vote);
+      }
+    } else {
+      await bet(body);
+    }
+
+    res.send({ message: 'Votos computados sem problemas!' });
   } catch (error) {
     res.status(400);
     console.log(error);
