@@ -56,8 +56,6 @@ router.post('/cadastrar', async (req, res, next) => {
 
     [
       'user',
-      'name',
-      'email',
       'password'
     ].forEach(el => {
       if (!info[el]) {
