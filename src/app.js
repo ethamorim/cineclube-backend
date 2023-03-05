@@ -50,7 +50,7 @@ app.use(
   cors({
     origin: ["https://cine-nandowastaken.vercel.app/", "http://localhost:5173", "http://127.0.0.1:5173/"],
     methods: ["GET", "POST", "PUT", "PATCH", "HEAD", "OPTIONS"],
-    allowedHeaders: ["X-Requested-With", "Content-Type"],
+    allowedHeaders: ["X-Requested-With", "Content-Type", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Accept"],
     credentials: true,
   })
 );
