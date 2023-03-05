@@ -44,7 +44,7 @@ app.use(
     credentials: true,
   })
 );
-app.use(logger("dev"));
+app.use(logger("user"));
 
 routes(app);
 
