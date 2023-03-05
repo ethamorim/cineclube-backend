@@ -1,6 +1,6 @@
 # Cineclube (Backend)
 
-Neste repositório se encontra o código fonte do **back-end** do site do [Cineclube](https://cine-nandowastaken.vercel.app), um clube de alunos do Instituto Federal de Alagoas, Campus Maceió, criado para juntar discentes que se interessam pelo universo cinematográfico. O site foi uma iniciativa de vários alunos, incluindo o atual presidente do Cineclube, também colaborador deste projeto, [Fernando Jorge](www.github.com/nandowastaken). 
+Neste repositório se encontra o código fonte do **back-end** do site do [Cineclube](https://cineclube.online), um clube de alunos do Instituto Federal de Alagoas, Campus Maceió, criado para juntar discentes que se interessam pelo universo cinematográfico. O site foi uma iniciativa de vários alunos, incluindo o atual presidente do Cineclube, também colaborador deste projeto, [Fernando Jorge](www.github.com/nandowastaken). 
 
 Foi desenvolvido utilizando o framework **express.js** e o ORM Sequelize, contando com um banco de dados PostegresSQL na nuvem. Ambos o banco de dados e o servidor estão sendo hospedados em [Render Cloud](https://render.com/), uma nuvem que disponibiliza diversos serviços necessários para se construir uma aplicação web.
 
