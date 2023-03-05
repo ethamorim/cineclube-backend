@@ -12,6 +12,11 @@ router.get('/sessaoAtiva', async (req, res, next) => {
   }
 });
 
+router.get('/logout', async (req, res, next) => {
+  req.session.destroy();
+  res.send();
+});
+
 router.post('/login', async (req, res, next) => {
   try {
     const body = req.body;
