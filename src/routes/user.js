@@ -3,9 +3,11 @@ const router = require('express').Router();
 const User = require('../models/user');
 
 router.get('/sessaoAtiva', async (req, res, next) => {
+  /*
   header('Access-Control-Allow-Origin: *');
   header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
   header('Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Authorization');
+  */
   const session = req.session;
 
   if (session.user) {
@@ -21,9 +23,6 @@ router.get('/logout', async (req, res, next) => {
 });
 
 router.post('/login', async (req, res, next) => {
-  header('Access-Control-Allow-Origin: *');
-  header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
-  header('Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Authorization');
   try {
     const body = req.body;
     if (!Object.keys(body).length) {
@@ -57,9 +56,6 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/cadastrar', async (req, res, next) => {
-  header('Access-Control-Allow-Origin: *');
-  header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
-  header('Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Authorization');
   try {
     const info = req.body;
 
