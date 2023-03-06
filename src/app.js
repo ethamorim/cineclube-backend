@@ -48,6 +48,7 @@ app.use(cors({
   ],
   preflightContinue: false,
   credentials: true,
+  AccessControlAllowOrigin: '*'
 }));
 
 app.use(logger('dev'));
