@@ -44,11 +44,11 @@ app.use(cors({
     'Content-Type',
     'X-Auth-Token',
     'Origin',
-    'Authorization'
+    'Authorization',
+    'Access-Control-Allow-Origin: *'
   ],
   preflightContinue: false,
-  credentials: true,
-  AccessControlAllowOrigin: '*'
+  credentials: true
 }));
 
 app.use(logger('dev'));
