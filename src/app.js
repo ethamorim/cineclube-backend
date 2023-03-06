@@ -36,6 +36,7 @@ app.use(
   })
 );
 
+/*
 app.use(cors({
   origin: ['http://localhost:5173', 'http://127.0.0.1:5173', "https://cine-nandowastaken.vercel.app/", "https://cineclube.online/"],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'HEAD', 'OPTIONS'],
@@ -46,6 +47,7 @@ app.use(cors({
   ],
   credentials: true,
 }));
+*/
 
 app.use(cors());
 
