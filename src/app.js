@@ -41,7 +41,8 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'HEAD', 'OPTIONS'],
   allowedHeaders: [
     'X-Requested-With',
-    'Content-Type'
+    'Content-Type',
+    'Access-Control-Allow-Origin: *'
   ],
   credentials: true
 }));
