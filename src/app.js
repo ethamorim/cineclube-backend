@@ -41,13 +41,8 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'HEAD', 'OPTIONS'],
   allowedHeaders: [
     'X-Requested-With',
-    'Content-Type',
-    'X-Auth-Token',
-    'Origin',
-    'Authorization',
-    'Access-Control-Allow-Origin: *'
+    'Content-Type'
   ],
-  preflightContinue: false,
   credentials: true
 }));
 
