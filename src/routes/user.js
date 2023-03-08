@@ -3,6 +3,7 @@ const router = require('express').Router();
 const User = require('../models/user');
 
 router.get('/sessaoAtiva', async (req, res, next) => {
+  header('Access-Control-Allow-Origin: *');
   /*
   header('Access-Control-Allow-Origin: *');
   header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
